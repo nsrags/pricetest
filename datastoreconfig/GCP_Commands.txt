@@ -1,0 +1,4 @@
+1) Create indexes for Price
+
+gsutil cp -r  gs://envconfig/datastoreconfig/index.yaml  /home/datastoreconfig
+gcloud app deploy /home/datastoreconfig/index.yaml

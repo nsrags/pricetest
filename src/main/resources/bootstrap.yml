@@ -1,0 +1,14 @@
+ spring:
+  application: 
+    name: price
+  cloud: 
+    config:
+      server:         
+        bootstrap: true      
+        git:           
+          searchPaths: Price*
+          uri: https://github.com/nsrags/spring-config-example
+          username: ns.rags@gmail.com
+          password: pass~345
+         
+          

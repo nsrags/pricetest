@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: price
+  labels:
+    app: price
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: price
+  template:
+    metadata:
+      name: price
+      labels:
+        app: price
+    spec:
+      containers:
+        - name: price
+          image: gcr.io/sharedservices-213514/price:v2
+          ports:
+          - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /monitoring/env
+              port: 8080
+            initialDelaySeconds: 40
+            timeoutSeconds: 1
+            periodSeconds: 10
+            failureThreshold: 1
+          readinessProbe:
+            httpGet:
+              path: /monitoring/env
+              port: 8080
+            initialDelaySeconds: 40
+            timeoutSeconds: 1
+            periodSeconds: 10
+            failureThreshold: 1
+          env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/google/service-account.json
+            - name: SPRING_PROFILE
+              valueFrom:
+                configMapKeyRef:
+                  name: price
+                  key: spring-profile
+          volumeMounts:
+            - name: "service-account"
+              mountPath: "/var/secrets/google"
+      volumes:
+        - name: "service-account"
+          secret:
+            secretName: "price"
