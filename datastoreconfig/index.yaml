@@ -1,7 +1,0 @@
- indexes:
-  - kind: Price
-    ancestor: no
-    properties:
-    - name: skuId
-    - name: priceStartDate
-      direction: desc
